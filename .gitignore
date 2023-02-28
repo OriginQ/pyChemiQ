@@ -1,0 +1,16 @@
+out
+build
+.vs
+*exe
+*o
+*pdb
+*json
+*~
+*png
+*jpg
+*gif
+*gjf
+*jpeg
+*tokens
+*interp
+a.out
