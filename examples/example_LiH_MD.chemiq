@@ -1,0 +1,54 @@
+##############################################################
+###                                                        ###   
+### Copyright (c) 2022, OriginQ, Inc. All Rights Reserved  ###
+### default configuration file for pyChemiQ                  ###
+###                                                        ### 
+##############################################################
+
+#Example for potential energy surface scan of a LiH molecule. The parameter settings are as follows: 
+basis set:sto-3G, active space: [2,2], ansatz: User-define, mapping: Parity, optimizer: SLSQP, initial parameter: Zero.
+
+general = {
+    task    = PES
+    backend = CPU_SINGLE_THREAD
+    license = XXXXX
+}
+
+mole = {
+    geoms = {
+        H 0 0 0.38
+        Li 0 0 -1.13
+    }
+    bohr    = F
+    charge  = 0
+    spin    = 1
+    basis   = sto-3G
+    pure    = T
+    local   = F
+    active = 2,2
+}
+
+ansatz = User-define {
+    circuit = {
+        QINIT 4
+        CREG 4
+        CNOT q[1],q[0]
+        CNOT q[2],q[1]
+        CNOT q[3],q[2]
+        H q[1]
+        H q[3]
+        S q[1]
+}
+    mapping       = P
+    reorder       = T
+}
+
+optimizer = SLSQP {
+    learning_rate                 = 0.1
+    init_para_type                = Zero
+    slices                        = 1
+    iters                         = 1000
+    fcalls                        = 1000
+    xatol                         = 1e-6
+    fatol                         = 1e-6
+}
