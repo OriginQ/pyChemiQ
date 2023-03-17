@@ -1,0 +1,117 @@
+##############################################################
+###                                                        ###   
+### Copyright (c) 2022, OriginQ, Inc. All Rights Reserved  ###
+### default configuration file for pyChemiQ                  ###
+###                                                        ### 
+##############################################################
+
+# available task types are:
+#     energy
+#     MD
+#     PES
+# available backend types is:
+#     CPU_SINGLE_THREAD
+
+general = {
+    task    = energy
+    backend = CPU_SINGLE_THREAD
+    print_out = F
+    print_iters = F
+    console_level = 0
+    logfile_name = chemiq.log
+    logfile_level = 0
+    license = XXXXX
+}
+
+###### molecular parameters ########
+# available basis types are
+#     sto-3g, sto-6g, mini, 3-21g, 6-31g
+mole = {
+    geoms = {
+        H 0 0 0
+        H 0 0 0.74
+    }
+    bohr    = F
+    charge  = 0
+    spin    = 1 
+    basis   = sto-3g
+    pure    = T 
+    local   = F 
+    active  = , 
+    nfrozen = 0
+    mix_scf = 0.5
+}
+
+###### ansatz parameters ########
+# available ansatz types are:
+#     UCC
+#     Hardware-efficient
+#     Symmetry-presvered
+#     User-define
+#  if the ansatz type is "User-define",
+#  the circuit in originir format shoulbe be 
+#  included in the "circuit = {}" block.
+#  Please read https://pyqpanda-toturial.readthedocs.io/zh/latest/QProgToOriginIR.html
+#  for more information about originir
+# 
+# available mapping types are:
+#     JW, Jordan-Wigner Transform
+#     P , Parity Transform
+#     BK, Bravyi-Kitaev Transform
+#     SP, Segment Parity Transform
+#
+# available excited_level types are:
+#     S,D,SD
+ansatz = User-define {
+    circuit       = {
+        QINIT 4
+        CREG 4
+        CNOT q[1],q[0]
+        CNOT q[2],q[1]
+        CNOT q[3],q[2]
+        H q[1]
+        H q[3]
+        S q[1]
+    }
+    excited_level = D
+    restricted    = T
+    cutoff        = T
+    mapping       = BK
+    reorder       = F
+}
+
+###### optimizer parameters ########
+# available optimizer types are:
+#     NELDER_MEAD
+#     POWELL
+#     COBYLA
+#     GRADIENT
+#     GRAD_DIRCTION
+#     L_BFGS_B
+#     SLSQP
+# available init_para_type types are:
+#    MP2
+#    Zero
+#    Random
+#    input
+optimizer = NELDER_MEAD {
+    learning_rate                 = 0.1 
+    init_para_type                = MP2
+    slices                                 = 1 
+    iters                         = 1000 
+    fcalls                        = 1000 
+    xatol                         = 1e-6 
+    fatol                         = 1e-6 
+}
+
+# molecular dynamics parameters
+#MD = 1 {
+#    HF                 = 1 
+#    axis               = "x y z"
+#    save_trajectory    = "traj.csv"
+#    save_topology      = "topology.txt"
+#    velocity           = 0.0
+#    step_size          = 0.2
+#    step_number        = 100 
+#    delta_r            = 0.001
+#}

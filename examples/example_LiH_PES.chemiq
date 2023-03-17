@@ -1,0 +1,51 @@
+##############################################################
+###                                                        ###   
+### Copyright (c) 2022, OriginQ, Inc. All Rights Reserved  ###
+### default configuration file for pyChemiQ                  ###
+###                                                        ### 
+##############################################################
+
+#Example for molecular dynamic simulation of a LiH molecule. The parameter settings are as follows: 
+basis set:3-21G, active space: [4,4], ansatz: Hardware-efficient, mapping: JW, optimizer: L-BFGS-B, initial parameter: Random. 
+
+general = {
+    task    = MD
+    backend = CPU_SINGLE_THREAD
+    license = XXXXX
+}
+
+mole = {
+    geoms = {
+        H 0 0 0.38
+        Li 0 0 -1.13
+    }
+    bohr    = F
+    charge  = 0
+    spin    = 1
+    basis   = 3-21G
+    pure    = T
+    local   = F
+    active = 4,4
+}
+
+ansatz = Hardware-efficient {
+    mapping       = JW
+    reorder       = F
+}
+
+optimizer = L-BFGS-B {
+    learning_rate                 = 0.1
+    init_para_type                = Random
+    slices                        = 1
+    iters                         = 1000
+    fcalls                        = 1000
+    xatol                         = 1e-6
+    fatol                         = 1e-6
+}
+
+MD = 1 {
+    velocity           = 0.0
+    step_size          = 0.2
+    step_number        = 100
+    delta_r            = 0.001
+}
