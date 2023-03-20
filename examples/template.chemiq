@@ -7,7 +7,6 @@
 
 # available task types are:
 #     energy
-#     MD
 #     PES
 # available backend types is:
 #     CPU_SINGLE_THREAD
