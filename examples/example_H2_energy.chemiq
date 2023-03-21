@@ -6,7 +6,7 @@
 ##############################################################
 
 #Example for single point energy calculation of a hydrogen molecule. The parameter settings are as follows: 
-basis set:sto-3G, ansatz: UCCSD, mapping: BK, optimizer: NELDER-MEAD, initial parameter: MP2.
+#basis set:sto-3G, ansatz: UCCSD, mapping: BK, optimizer: NELDER-MEAD, initial parameter: MP2.
 
 general = {
     task    = energy

@@ -5,11 +5,11 @@
 ###                                                        ### 
 ##############################################################
 
-#Example for potential energy surface scan of a LiH molecule. The parameter settings are as follows: 
-basis set:sto-3G, active space: [2,2], ansatz: User-define, mapping: Parity, optimizer: SLSQP, initial parameter: Zero.
+#Example for molecular dynamic simulation of a LiH molecule. The parameter settings are as follows: 
+#basis set:3-21G, active space: [4,4], ansatz: Hardware-efficient, mapping: JW, optimizer: L-BFGS-B, initial parameter: Random. 
 
 general = {
-    task    = PES
+    task    = MD
     backend = CPU_SINGLE_THREAD
     license = XXXXX
 }
@@ -22,33 +22,30 @@ mole = {
     bohr    = F
     charge  = 0
     spin    = 1
-    basis   = sto-3G
+    basis   = 3-21G
     pure    = T
     local   = F
-    active = 2,2
+    active = 4,4
 }
 
-ansatz = User-define {
-    circuit = {
-        QINIT 4
-        CREG 4
-        CNOT q[1],q[0]
-        CNOT q[2],q[1]
-        CNOT q[3],q[2]
-        H q[1]
-        H q[3]
-        S q[1]
-}
-    mapping       = P
-    reorder       = T
+ansatz = Hardware-efficient {
+    mapping       = JW
+    reorder       = F
 }
 
-optimizer = SLSQP {
+optimizer = L-BFGS-B {
     learning_rate                 = 0.1
-    init_para_type                = Zero
+    init_para_type                = Random
     slices                        = 1
     iters                         = 1000
     fcalls                        = 1000
     xatol                         = 1e-6
     fatol                         = 1e-6
+}
+
+MD = 1 {
+    velocity           = 0.0
+    step_size          = 0.2
+    step_number        = 100
+    delta_r            = 0.001
 }
