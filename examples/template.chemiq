@@ -7,7 +7,7 @@
 
 # available task types are:
 #     energy
-#     PES
+#     MD
 # available backend types is:
 #     CPU_SINGLE_THREAD
 
@@ -45,7 +45,7 @@ mole = {
 # available ansatz types are:
 #     UCC
 #     Hardware-efficient
-#     Symmetry-presvered
+#     Symmetry-preserved
 #     User-define
 #  if the ansatz type is "User-define",
 #  the circuit in originir format shoulbe be 
@@ -81,19 +81,19 @@ ansatz = User-define {
 
 ###### optimizer parameters ########
 # available optimizer types are:
-#     NELDER_MEAD
+#     NELDER-MEAD
 #     POWELL
 #     COBYLA
-#     GRADIENT
+#     Gradient-Descent
 #     GRAD_DIRCTION
-#     L_BFGS_B
+#     L-BFGS-B
 #     SLSQP
 # available init_para_type types are:
 #    MP2
 #    Zero
 #    Random
 #    input
-optimizer = NELDER_MEAD {
+optimizer = NELDER-MEAD {
     learning_rate                 = 0.1 
     init_para_type                = MP2
     slices                                 = 1 
