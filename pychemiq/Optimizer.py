@@ -8,7 +8,6 @@
     @mail address : hdp@originqc.com
     @date         : 2022-11-01 16:31:28
     @project      : pychemiq
-    @version      : version
     @source file  : Optimizer.py
 
 ============================
@@ -34,6 +33,7 @@ def vqe_solver(
             pauli=None,
             init_para = None,
             chemiq=None,
+            pauli_group="none",
             Learning_rate = 0.1,
             Xatol=1e-4,
             Fatol=1e-4,
@@ -46,7 +46,7 @@ def vqe_solver(
     err = ""
     if chemiq == None:
         err = "ERROR: chemiq is needed!!!"
-    if init_para.any() == None:
+    if init_para is None:
         err = "ERROR: init_para is needed!!!"
     if pauli== None:
         err = "ERROR: pauli is needed!!!" 
@@ -54,19 +54,21 @@ def vqe_solver(
         err = "ERROR: ansatz is needed!!!"
     if err != "":
         raise ValueError(err)
-
-    if method == "NELDER_MEAD":
+    
+    method = method.upper().replace("_","-")
+    if method == "NELDER-MEAD":
         method = DEF_NELDER_MEAD 
     elif method == "POWELL":
         method = DEF_POWELL
-    elif method == "L_BFGS_B":
-        method = DEF_LBFGSB
+    elif method == "GRADIENT-DESCENT":
+        method = DEF_GRADIENT_DESCENT
 
     chemiq.setOptimizerType(method)
     chemiq.setOptimizerIterNum(MaxIter)
     chemiq.setOptimizerFuncCallNum(MaxFCalls)
     chemiq.setOptimizerXatol(Xatol)
     chemiq.setOptimizerFatol(Fatol)
+    chemiq.setPauliGroup(pauli_group)
 
     result = chemiq.getOptimizedData(0,init_para,pauli,chemiq.qvec,ansatz)
     

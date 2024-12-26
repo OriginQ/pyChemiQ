@@ -13,7 +13,13 @@
 ============================
 """
 
-from pychemiq import transCC2UCC
+from pychemiq import (
+    transCC2UCC,
+    FermionOperator,
+    load_fermion_from_string,
+    load_pauli_from_string,
+    get_PES_geoms
+)
 
 def get_cc_n_term(n_qubits, n_elec,excited_level):   # get_ccsd_n_term接口
     '''
@@ -72,3 +78,29 @@ def get_cc(n_qubits, n_elec, para,excited_level = "SD"):
                         fermion_op += FermionOperator(f_op2(ex2,ex1,j,i),para[cnt])
                         cnt +=1
     return fermion_op
+
+def get_valid_string(input_str):
+    """
+    "   abcd" -> "abcd"
+    """
+    if type(input_str) != type([]):
+        input_str = input_str.split("\n")
+    lines = []
+    for line in input_str:
+        line = line.strip()
+        if line != "":
+            lines.append(line)
+    return "\n".join(lines)
+
+def load_hamiltonian_from_string(op_str):
+    """
+    convert fermion string or pauli string into an operator class
+    such as:
+        "3+ 2+ 1 0" -> FermionOperator 
+        "X0 Y1 Z2 Z3" -> PauliOperator
+    """
+    op_str = get_valid_string(op_str)
+    if "+" in op_str:
+        return load_fermion_from_string(op_str)
+    else:
+        return load_pauli_from_string(op_str)
