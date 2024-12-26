@@ -12,28 +12,19 @@ general = {
     task    = energy
     backend = CPU_SINGLE_THREAD
     license = XXXXX
+    PES_atoms = 1,2
+    PES_values = 30,45,60,90,120
 }
 
 mole = {
     geoms = {
-        H 0 0 0
-	H 0 0 0.54;
-	H 0 0 0
-	H 0 0 0.64;
-	H 0 0 0
-	H 0 0 0.74;
-	H 0 0 0
-	H 0 0 0.84;
-	H 0 0 0
-	H 0 0 0.94
+	    H 0 0 0
+	    H 0 0 0.74
+    }
    
-    bohr    = F
     charge  = 0
     spin    = 1
     basis   = sto-3G
-    pure    = T
-    local   = F
-    active = 2,2
 }
 
 ansatz = User-define {
