@@ -13,7 +13,13 @@
 ============================
 """
 
-from pychemiq import Mole,set_current_execute_path
+from pychemiq import (
+    Mole,
+    set_current_execute_path,
+    set_log_levels,
+    CCSD
+)
+
 import numpy as np
 import platform,os
 
@@ -42,6 +48,10 @@ class Molecules(Mole):
         active = None,
         nfrozen = None,
         filename="",
+        diis = "cdiis",
+        diis_n = 8,
+        diis_thre = 0.01,
+        hamiltonian_thre=1e-8,
         directory=None):
 
         if type(geometry) == type([]):
@@ -50,6 +60,8 @@ class Molecules(Mole):
             active = [0,0]
         if nfrozen == None:
             nfrozen = 0
+        self.active = active 
+        self.nfrozen = nfrozen
         self.geometry     = geometry
         self.basis        = basis
         self.multiplicity = multiplicity
@@ -64,21 +76,30 @@ class Molecules(Mole):
             self.argPrintError("multiplicity")
             return
 
-        bohr = False
-        pure = False
+        self.bohr = False
+        self.pure = False
+        # set log levels
+        set_log_levels("",6,6)
 
-        Mole.__init__(self,geometry,basis,charge,multiplicity,bohr,pure,"","rectangular")
+        Mole.__init__(
+            self,geometry,basis,charge,multiplicity,
+            self.bohr,self.pure,"","rectangular"
+        )
+
+        # settings for diis 
+        self.setDIIS(diis,diis_n,diis_thre)
         # setting active space
-        if nfrozen == 0:
-            self.setActiveSpace(active)
-        else:
-            self.setActiveSpace([0,-1])
-            self.setNfrozen(nfrozen)
-        hf_iters = 1000 
-        hf_threshold = 1e-10
-        self.HF(hf_iters,hf_threshold) 
+        if self.nfrozen != 0:
+            self.active = [0,-1]
+            self.setNfrozen(self.nfrozen)
+        self.setActiveSpace(self.active)
+        self.set_hamiltonian_thre(hamiltonian_thre)
+        self.hf_iters = 1000 
+        self.hf_threshold = 1e-10
+        self.HF(self.hf_iters,self.hf_threshold) 
         self.molecular_hamiltonian = self.getHamiltonian()
         self.getAttributes()  
+        self.ccsd = None 
           
         return
     def getAttributes(self):
@@ -120,11 +141,39 @@ class Molecules(Mole):
         Docstrings for method get_molecular_hamiltonian
         """
         return self.molecular_hamiltonian
-
-    #def get_active_space_integrals(self,active_orbitals=None, active_electrons=None):
-    #    """
-    #    Docstrings for method get_active_space_integrals
-    #    """
-    #    
-    #    return
-    #
+    
+    def ccsd_init(self):
+        """
+        Docstrings for method ccsd_init
+        """
+        mol = CCSD(
+            self.geometry,
+            self.basis,
+            self.charge,
+            self.multiplicity,
+            self.bohr,
+            self.pure,
+            "",
+            "rectangular"
+        )
+        mol.run_scf(self.hf_threshold,self.hf_iters) 
+        mol.setActiveSpace(self.active)
+        return mol 
+    def get_ccsd_energy(self):
+        """
+        Docstrings for method get_ccsd_energy
+        """
+        if self.ccsd == None:
+            self.ccsd = self.ccsd_init()
+            
+        return self.ccsd.get_CCSD_energy()
+    
+    def get_ccsd_init_para(self,excited_level):
+        """
+        Docstrings for method get_ccsd_init_para
+        """
+        if excited_level not in ["D","SD"]:
+            raise RuntimeError("only D or SD is available")
+        if self.ccsd == None:
+            self.ccsd = self.ccsd_init()
+        return self.ccsd.get_init_para(excited_level,True)
