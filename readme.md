@@ -19,7 +19,7 @@ pip install pychemiq
 ```
 
 
-## 计算氢分子单电能代码示例
+## 计算氢分子单点能代码示例
 
 ```python
 from pychemiq import Molecules,ChemiQ,QMachineType

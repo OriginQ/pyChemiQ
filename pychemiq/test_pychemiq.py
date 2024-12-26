@@ -4,17 +4,20 @@ from Molecules import Molecules
 from Optimizer import vqe_solver
 from Circuit.Ansatz import (
     UCC,
-    get_cc_n_term,
-    get_cc,
     HardwareEfficient,
     SymmetryPreserved,
     UserDefine
+)
+from pychemiq.Utils import (
+    get_cc_n_term,
+    get_cc
 )
 from . import QMachineType,ChemiQ
 from Transform.Mapping import (
     jordan_wigner,
     bravyi_kitaev,
     parity,
+    segment_parity,
     MappingType,
     Transform
 )
@@ -41,7 +44,7 @@ class Test_Molecules:
         )
     
         print(mol.get_molecular_hamiltonian())
-        mol.get_active_space_integrals()
+        #mol.get_active_space_integrals()
         
         return
     
@@ -325,20 +328,21 @@ class Test_Ansatz:
 
         circuit = "H q[0]"
         try:
-            ansatz = UserDefine(2,circuit = circuit,option={"test":"test"})
+            ansatz = UserDefine(2,circuit = circuit)
         except ValueError as e:
             print(e)
 
-        try:
-            ansatz = UserDefine(2,circuit = circuit,option=None)
-        except ValueError as e:
-            print(e)
+        # try:
+        #     ansatz = UserDefine(2,circuit = circuit,option=None)
+        # except ValueError as e:
+        #     print(e)
 
         fermion = "3+ 2+ 1 0: 0"
         try:
-            ansatz = UserDefine(2,fermion = fermion,option={"test":"test"})
+            ansatz = UserDefine(2,fermion = fermion)
         except ValueError as e:
             print(e)
+        ansatz = UserDefine(2,circuit = circuit,chemiq=self.chemiq)
 
         return
 
@@ -360,11 +364,10 @@ class Test_Mapping:
 
         self.fermion = self.mol.get_molecular_hamiltonian()
     def testMapping(self):
-        self.mapping_type = MappingType.Jordan_Wigner
-        pauli = Transform(self.fermion,self.mapping_type)
-        self.mapping_type = MappingType.Parity
-        pauli = Transform(self.fermion,self.mapping_type)
-        pauli = Transform(self.fermion,"test")
+        pauli = jordan_wigner(self.fermion)
+        pauli = bravyi_kitaev(self.fermion)
+        pauli = parity(self.fermion)
+        pauli = segment_parity(self.fermion)
 
 
 if __name__ == "__main__":

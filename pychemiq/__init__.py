@@ -1,4 +1,9 @@
-__version__ = "1.1"
+__version__ = "1.1.0"
 
 from .pychemiq import *
-from .Molecules import Molecules
+from .Transform.Mapping import *
+from .Optimizer import *
+from .Circuit.Ansatz import *
+from .Molecules import *
+from .Utils import * 
+from .RealChip import *
