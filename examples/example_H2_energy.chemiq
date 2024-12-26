@@ -1,0 +1,46 @@
+##############################################################
+###                                                        ###   
+### Copyright (c) 2022, OriginQ, Inc. All Rights Reserved  ###
+###  configuration file for pyChemiQ                  ###
+###                                                        ### 
+##############################################################
+
+#Example for single point energy calculation of a hydrogen molecule. The parameter settings are as follows: 
+#basis set:sto-3G, ansatz: UCCSD, mapping: BK, optimizer: NELDER-MEAD, initial parameter: MP2.
+
+general = {
+    task    = energy
+    backend = CPU_SINGLE_THREAD
+    license = XXXXX
+}
+
+mole = {
+    geoms = {
+        H 0 0 0
+        H 0 0 0.74
+    }
+    bohr    = F
+    charge  = 0
+    spin    = 1
+    basis   = sto-3G
+    pure    = T
+    local   = F
+}
+
+ansatz = UCC {
+    excited_level = SD
+    restricted    = T
+    cutoff        = T
+    mapping       = BK
+    reorder       = F
+}
+
+optimizer = NELDER-MEAD {
+    learning_rate                 = 0.1
+    init_para_type                = MP2
+    slices                        = 1
+    iters                         = 1000
+    fcalls                        = 1000
+    xatol                         = 1e-6
+    fatol                         = 1e-6
+}
