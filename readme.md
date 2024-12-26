@@ -12,7 +12,7 @@ pyChemiQ是一款由本源量子开发的python软件库, 它基于ChemiQ封装�
 
 ## 安装pyChemiQ
 
-我们提供了Linux,macOS,Windows上的python预编译包供安装，目前pyChemiQ支持3.8版本的python，更多python版本的支持还在开发中。
+我们提供了Linux,macOS,Windows上的python预编译包供安装，目前pyChemiQ支持3.8、3.9、3.10版本的python。
 
 ```python
 pip install pychemiq
