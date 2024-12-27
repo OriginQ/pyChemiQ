@@ -13,7 +13,7 @@ general = {
     backend = CPU_SINGLE_THREAD
     license = XXXXX
     PES_atoms = 1,2
-    PES_values = 30,45,60,90,120
+    PES_values = 0.5,0.6,0.74,0.8,1.0,1.5
 }
 
 mole = {
