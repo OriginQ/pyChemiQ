@@ -9,7 +9,7 @@
 #basis set:sto-3G, active space: [2,2], ansatz: User-define, mapping: Parity, optimizer: SLSQP, initial parameter: Zero.
 
 general = {
-    task    = energy
+    task    = PES
     backend = CPU_SINGLE_THREAD
     license = XXXXX
     PES_atoms = 1,2
