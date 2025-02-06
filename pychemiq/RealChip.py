@@ -12,6 +12,7 @@
 
 ============================
 """
+from pychemiq import set_log_levels
 
 def real_chip_measure(
             ansatz=None,
@@ -26,12 +27,15 @@ def real_chip_measure(
             cloud_url="https://pyqanda-admin.qpanda.cn",
             amend=True,
             mapping=True,
-            circuit_opt=True
+            circuit_opt=True,
+            log = False,
+            wait = 30
             ):
     """
     Docstrings for method vqe_solver
+    wait: query count
     """
-
+    set_log_levels("",6,6)
     err = ""
     if chemiq == None:
         err = "ERROR: chemiq is needed!!!"
@@ -51,7 +55,7 @@ def real_chip_measure(
         raise ValueError(err)
 
     chemiq.set_shots(shots)
-    chemiq.setRealChip(mode,chip_id,amend,mapping,circuit_opt)
+    chemiq.setRealChip(mode,chip_id,amend,mapping,circuit_opt,log,wait)
     #chemiq.init_cloud_machine(cloud_url,api_key)
     
     if mode in ["submit","wait"]:

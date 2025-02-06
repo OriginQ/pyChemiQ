@@ -10,7 +10,7 @@ else :
 
 setup(
     name = 'pychemiq', 
-    version='1.1', 
+    version='1.1.2', 
     license = "Apache Licence",  
     author = "OriginQ",
     include_package_data = True,  
