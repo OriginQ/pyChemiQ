@@ -1,4 +1,4 @@
-__version__ = "1.1.0"
+__version__ = "1.1.2"
 
 from .pychemiq import *
 from .Transform.Mapping import *
